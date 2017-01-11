@@ -145,9 +145,8 @@ bool UnixNativeCodeManager::UnwindStackFrame(MethodInfo *    pMethodInfo,
 
         GcInfoDecoder decoder(GCInfoToken(p), DECODE_REVERSE_PINVOKE_VAR);
 
-        // @TODO: CORERT: Encode reverse PInvoke frame slot in GCInfo: https://github.com/dotnet/corert/issues/2115
-        // INT32 slot = decoder.GetReversePInvokeFrameStackSlot();
-        // assert(slot != NO_REVERSE_PINVOKE_FRAME);
+        INT32 slot = decoder.GetReversePInvokeFrameStackSlot();
+        assert(slot != NO_REVERSE_PINVOKE_FRAME);
 
         *ppPreviousTransitionFrame = (PTR_VOID)-1;
         return true;
