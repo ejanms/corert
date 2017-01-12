@@ -147,8 +147,12 @@ bool UnixNativeCodeManager::UnwindStackFrame(MethodInfo *    pMethodInfo,
 
         INT32 slot = decoder.GetReversePInvokeFrameStackSlot();
         assert(slot != NO_REVERSE_PINVOKE_FRAME);
-
-        *ppPreviousTransitionFrame = (PTR_VOID)-1;
+        TADDR basePointer = dac_cast<TADDR>(GetFramePointer(pMethodInfo, pRegisterSet));
+        if (basePointer == NULL)
+        {
+            basePointer = dac_cast<TADDR>(pRegisterSet->GetSP());
+        }
+        *ppPreviousTransitionFrame = dac_cast<PTR_VOID>(basePointer + slot);
         return true;
     }
 
